@@ -8,6 +8,8 @@ const VwGames = require('./models/VwGames')
 const Word = require('./models/Word')
 const Leaderboard = require('./models/Leaderboard')
 
+const PORT = process.env.PORT || 3000
+
 const app = express()
 
 app.use(express.json())
@@ -53,5 +55,8 @@ app.post('/api/leaderboards', async (req, res) => {
   })
 })
 
+// app.listen(PORT, () => {
+//   console.log(`Server berjalan di http://localhost:${PORT}`)
+// })
+
 module.exports = app
-// Start the server
