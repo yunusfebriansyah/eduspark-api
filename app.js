@@ -17,7 +17,23 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 // cek koneksi database
-sequelize.sync().then(() => { console.log('Koneksi database berhasil.') })
+// sequelize.sync().then(() => { console.log('Koneksi database berhasil.') })
+async function checkDbConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Koneksi database berhasil.');
+  } catch (error) {
+    console.error('❌ Gagal terkoneksi ke database:', error);
+  }
+}
+checkDbConnection();
+
+app.get('/', (req, res) => {
+  res.json({
+    status: '200',
+    message: 'Welcome to the Word Game API'
+  })
+})
 
 // API Routes
 app.get('/api/games', async (req, res) => {
