@@ -31,7 +31,7 @@ checkDbConnection();
 app.get('/', (req, res) => {
   res.json({
     status: '200',
-    message: 'Welcome to the Word Game API'
+    message: 'Welcome to the Word Game API EduSpark'
   })
 })
 
