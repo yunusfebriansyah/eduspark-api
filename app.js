@@ -38,7 +38,13 @@ app.get('/', (req, res) => {
 // API Routes
 app.get('/api/games', async (req, res) => {
   const data = await VwGames.findAll()
-  res.json(data)
+  res.json(
+    {
+      status: '200',
+      message: 'Success get all games.',
+      data: data
+    }
+  )
 })
 
 app.get('/api/words/:game_id', async (req, res) => {
@@ -47,7 +53,11 @@ app.get('/api/words/:game_id', async (req, res) => {
       game_id: req.params.game_id
     }
   })
-  res.json(data)
+  res.json({
+    status: '200',
+    message: 'Success get all words.',
+    data: data
+  })
 })
 
 app.get('/api/leaderboards/:game_id', async (req, res) => {
@@ -56,7 +66,11 @@ app.get('/api/leaderboards/:game_id', async (req, res) => {
       game_id: req.params.game_id
     }
   })
-  res.json(data)
+  res.json({
+    status: '200',
+    message: 'Success get all leaderboards.',
+    data: data
+  })
 })
 
 app.post('/api/leaderboards', async (req, res) => {
