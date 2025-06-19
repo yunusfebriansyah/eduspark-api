@@ -5,6 +5,7 @@ const express = require('express')
 const path = require('path')
 const sequelize = require('./config/database')
 const VwGames = require('./models/VwGames')
+const Game = require('./models/Game')
 const Word = require('./models/Word')
 const Leaderboard = require('./models/Leaderboard')
 
@@ -38,11 +39,22 @@ app.get('/', (req, res) => {
 // API Routes
 app.get('/api/games', async (req, res) => {
   const data = await VwGames.findAll()
+  let returnData = []
+
+  for (let i = 0; i < data.length; i++) {
+    returnData.push({
+      id: data[i].id,
+      name: data[i].name,
+      category: data[i].category,
+      // total_point: parseInt(data[i].total_point),
+      total_player: parseInt(data[i].total_point),
+    })
+  }
   res.json(
     {
       status: '200',
       message: 'Success get all games.',
-      data: data
+      data: returnData
     }
   )
 })
@@ -76,9 +88,15 @@ app.get('/api/leaderboards/:game_id', async (req, res) => {
 app.post('/api/leaderboards', async (req, res) => {
   await Leaderboard.create({
     nickname: req.body.nickname,
-    game_id: req.body.gameID,
-    total_point: req.body.totalPoint
+    game_id: req.body.game_id,
+    total_point: req.body.total_point
   })
+
+  await Game.update(
+    { total_point: sequelize.literal('total_point + 1') },
+    { where: { id: req.body.gameID } }
+  )
+  
   res.json({
     status: '200',
     message: 'Success post new data.'
